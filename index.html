@@ -3,127 +3,214 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Food Experiment</title>
+<title>FoodGo Experiment</title>
 
 <style>
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f8f8f8;}
-.app{max-width:390px;margin:auto;background:#fff;min-height:100vh;}
-.header{background:#e23744;color:#fff;padding:16px;font-size:18px;font-weight:600;}
-.restaurant-item{padding:18px;border-bottom:1px solid #eee;cursor:pointer;}
-.menu-item{display:flex;justify-content:space-between;padding:14px;border-bottom:1px solid #f0f0f0;}
-.menu-left{width:60%;}
-.dish-name{font-weight:600;font-size:15px;}
-.rating{font-size:13px;color:#388e3c;margin:4px 0;}
-.price{font-size:14px;}
-.menu-right{width:110px;position:relative;}
-.menu-right img{width:100%;height:90px;object-fit:cover;border-radius:8px;}
-.add-btn{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);
-background:#fff;border:1px solid #e23744;color:#e23744;
-font-weight:600;font-size:13px;padding:6px 18px;border-radius:6px;cursor:pointer;}
-.confirmation{display:flex;flex-direction:column;align-items:center;justify-content:center;height:80vh;text-align:center;}
-.tick-circle{width:90px;height:90px;border-radius:50%;background:#2ecc71;
-display:flex;align-items:center;justify-content:center;font-size:40px;color:white;margin-bottom:20px;}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  background:#fff;
+}
+
+/* HOME SCREEN */
+.home{
+  min-height:100vh;
+  background:#ffeef2;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding-top:60px;
+}
+
+.home h1{
+  margin-bottom:40px;
+}
+
+.restaurant-btn{
+  width:80%;
+  padding:18px;
+  margin:10px 0;
+  border-radius:12px;
+  font-size:16px;
+  font-weight:600;
+  border:none;
+  cursor:pointer;
+}
+
+.r1{ background:#ffd6e0; }
+.r2{ background:#ffc2d1; }
+.r3{ background:#ffb3c6; }
+.r4{ background:#ffa6c1; }
+
+/* APP SCREEN */
+.app{
+  max-width:390px;
+  margin:auto;
+  background:#fff;
+  min-height:100vh;
+}
+
+.header{
+  background:#e23744;
+  color:#fff;
+  padding:16px;
+  font-size:18px;
+  font-weight:600;
+}
+
+.menu-item{
+  display:flex;
+  justify-content:space-between;
+  padding:14px;
+  border-bottom:1px solid #f0f0f0;
+}
+
+.menu-left{
+  width:60%;
+}
+
+.dish-name{
+  font-weight:600;
+  font-size:15px;
+}
+
+.rating{
+  font-size:13px;
+  color:#388e3c;
+  margin:4px 0;
+}
+
+.price{
+  font-size:14px;
+}
+
+.menu-right{
+  width:110px;
+  position:relative;
+}
+
+.menu-right img{
+  width:100%;
+  height:90px;
+  object-fit:cover;
+  border-radius:8px;
+}
+
+.add-btn{
+  position:absolute;
+  bottom:-8px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#fff;
+  border:1px solid #e23744;
+  color:#e23744;
+  font-weight:600;
+  font-size:13px;
+  padding:6px 18px;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.confirmation{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  height:80vh;
+  text-align:center;
+}
+
+.tick-circle{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  background:#2ecc71;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:40px;
+  color:white;
+  margin-bottom:20px;
+}
 </style>
 </head>
 
 <body>
 
-<div class="app">
-
-<div id="home">
-  <div class="header">Select Restaurant</div>
-  <div class="restaurant-item" onclick="openMenu(20)">Restaurant 1</div>
-  <div class="restaurant-item" onclick="openMenu(40)">Restaurant 2</div>
-  <div class="restaurant-item" onclick="openMenu(80)">Restaurant 3</div>
-  <div class="restaurant-item" onclick="openMenu(120)">Restaurant 4</div>
+<!-- HOME PAGE -->
+<div id="home" class="home">
+  <h1>Select Restaurant</h1>
+  <button class="restaurant-btn r1" onclick="openMenu(15)">Restaurant 1</button>
+  <button class="restaurant-btn r2" onclick="openMenu(30)">Restaurant 2</button>
+  <button class="restaurant-btn r3" onclick="openMenu(60)">Restaurant 3</button>
+  <button class="restaurant-btn r4" onclick="openMenu(100)">Restaurant 4</button>
 </div>
 
-<div id="menu" style="display:none;"></div>
+<div id="app" style="display:none;">
+  <div class="app">
+    <div class="header">Menu</div>
+    <div id="menu"></div>
+  </div>
+</div>
 
 <div id="confirmation" style="display:none;" class="confirmation">
   <div class="tick-circle">✓</div>
   <h2>Item Added to Cart</h2>
 </div>
 
-</div>
-
 <script>
 
 let startTime = 0;
 
-/* ---- 36 REAL IMAGE FILENAMES ---- */
-/* IMPORTANT: Replace these with YOUR exact filenames */
-
+/* --- YOUR 90 REAL IMAGE FILENAMES --- */
 const realImages = [
-"paneer-butter-masala.jpg",
-"paneer-tikka.jpg",
-"palak-paneer.jpg",
-"dal-tadka.jpg",
-"chole-masala.jpg",
-"rajma-masala.jpg",
-"veg-biryani.jpg",
-"masala-dosa.jpg",
-"kadai-paneer.jpg",
-"aloo-paratha.jpg"
+"dal-makhani.jpg","jalebi.jpg","south-indian-platter.jpg","palak-gravy.jpg",
+"bhindi-fry.jpg","bhindi-dry.jpg","bhindi-masala.jpg","pack-of-roti.jpg",
+"malai-mushroom-gravy.jpg","rajma-gravy-masala.jpg","malai-rajma-gravy.jpg",
+"prawns-rice-thali.jpg","veg-chatpata.jpg","gobi-paratha.jpg","dal-tadka-full.jpg",
+"soya-munchurian-dry.jpg","palak-paratha.jpg","crispy-veg-snack.jpg",
+"veg-paneer-roll.jpg","aloo-kofta.jpg","masala-maggi.jpg","2-uttapam.jpg",
+"tandoori-roti.jpg","plain-veg-momos.jpg","rose-rasmalai.jpg",
+"kadhi-pakora-rice-meal.jpg","gulab-jamun-pista-dessert.jpg",
+"chicken-tangdi-gravy.jpg","aloo-sandwich.jpg","veg-gravy-momos.jpg",
+"kurkure-onion-bhaje.jpg","dahi-vada.jpg","chicken-momos.jpg",
+"gulab-jamun.jpg","pista-kulfi.jpg","paneer-full-meal.jpg","veg-momos.jpg",
+"appe.jpg","rasmalai.jpg","chicken-dum-biryani.jpg","butter-pav-bhaji.jpg",
+"millet-khichadi.jpg","dal-khichadi.jpg","oats-khichadi.jpg","methi-thepla.jpg",
+"creamy-mushroom.jpg","red-lentil-curry.jpg","chicken-crispy-manchurian.jpg",
+"fried-tandoori-chicken.jpg","chicken-tangdi.jpg","aloo-jeera.jpg",
+"bhindi-do-pyaaza.jpg","corn-masala.jpg","methi-malai-matar.jpg",
+"veg-kolhapuri.jpg","aloo-paratha.jpg","kadai-paneer.jpg","baingan-bharta.jpg",
+"curd-rice.jpg","veg-pulao.jpg","lemon-rice.jpg","paneer-biryani.jpg",
+"veg-biryani.jpg","chicken-biryani.jpg","rava-dosa.jpg","uttapam.jpg",
+"plain-dosa.jpg","masala-dosa.jpg","medu-vada.jpg","idli-sambar.jpg",
+"pav-bhaji.jpg","rajma-chawal.jpg","samosa.jpg","vada-pav.jpg",
+"manchurian-gravy.jpg","chilli-paneer.jpg","schezwan-noodles.jpg",
+"veg-fried-rice.jpg","veg-hakka-noodles.jpg","gajar-halwa.jpg",
+"paneer-lababdar.jpg","malai-kofta.jpg","garlic-naan.jpg","butter-naan.jpg",
+"dal-tadka.jpg","palak-paneer.jpg","paneer-tikka.jpg",
+"paneer-butter-masala.jpg"
 ];
 
-while(realImages.length < 36){
-  realImages.push(realImages[realImages.length % 10]);
-}
+/* Build 100 dish list */
+let allDishes = [];
 
-/* ---- 50 REALISTIC FOOD NAMES (NO IMAGE GROUP) ---- */
-
-const placeholderNames = [
-"Veg Kolhapuri","Methi Malai Mutter","Corn Masala","Bhindi Do Pyaza",
-"Aloo Jeera","Tawa Pulao","Hyderabadi Veg Biryani","Cheese Paratha",
-"Paneer Kulcha","Mushroom Masala","Veg Korma","Stuffed Capsicum",
-"Schezwan Fried Rice","Veg Manchurian","Chilli Garlic Noodles",
-"Hara Bhara Kebab","Dahi Bhalla","Bombay Sandwich","Pav Bhaji",
-"Khichdi","Curd Rice","Tomato Soup","Sweet Corn Soup",
-"Veg Momos","Tandoori Broccoli","Malai Chaap","Matar Mushroom",
-"Paneer Do Pyaza","Veg Handi","Kofta Curry",
-"Sabudana Khichdi","Thepla","Masala Khichdi","Onion Uttapam",
-"Cheese Dosa","Rava Idli","Gobi Manchurian","Veg Spring Roll",
-"Malai Lassi","Jalebi","Kheer","Besan Ladoo",
-"Rasmalai","Moong Dal Halwa","Pineapple Sheera",
-"Fruit Custard","Chocolate Barfi","Pista Kulfi","Rabri","Mango Shrikhand"
-];
-
-/* ---- BUILD 120 ITEMS ---- */
-
-const allDishes = [];
-
-/* 36 real */
-for(let i=0;i<36;i++){
+/* Add 90 real */
+realImages.forEach(img=>{
   allDishes.push({
-    name: realImages[i],
-    img: "images/"+realImages[i]
+    name: img,
+    img: "images/"+img
   });
+});
+
+/* Add 5 pink + 5 yellow */
+for(let i=0;i<5;i++){
+  allDishes.push({name:"Chef Special", img:"images/pink-placeholder.jpg"});
+  allDishes.push({name:"House Special", img:"images/yellow-placeholder.jpg"});
 }
 
-/* 30 pink placeholder */
-for(let i=0;i<30;i++){
-  allDishes.push({
-    name: placeholderNames[i],
-    img: "images/pink-placeholder.jpg"
-  });
-}
-
-/* 20 yellow placeholder */
-for(let i=30;i<50;i++){
-  allDishes.push({
-    name: placeholderNames[i],
-    img: "images/yellow-placeholder.jpg"
-  });
-}
-
-/* 34 repeat from real */
-for(let i=0;i<34;i++){
-  allDishes.push({
-    name: realImages[i % 36],
-    img: "images/"+realImages[i % 36]
-  });
-}
+/* Shuffle once per load */
+allDishes.sort(()=>Math.random()-0.5);
 
 function formatName(filename){
   return filename
@@ -133,57 +220,49 @@ function formatName(filename){
 }
 
 function openMenu(count){
-
   startTime = new Date().getTime();
-
   document.getElementById("home").style.display="none";
-  const menuDiv=document.getElementById("menu");
-  menuDiv.style.display="block";
-  menuDiv.innerHTML='<div class="header">Menu</div>';
+  document.getElementById("app").style.display="block";
+
+  const menuDiv = document.getElementById("menu");
+  menuDiv.innerHTML="";
 
   for(let i=0;i<count;i++){
+    let dish = allDishes[i];
+    let price = 150+Math.floor(Math.random()*300);
+    let rating = (4+Math.random()*0.5).toFixed(1);
 
-    let dish=allDishes[i];
-    let price=150+Math.floor(Math.random()*300);
-    let rating=(4+Math.random()*0.5).toFixed(1);
-
-    let displayName = dish.name.endsWith(".jpg")
+    let name = dish.name.endsWith(".jpg")
       ? formatName(dish.name)
       : dish.name;
 
-    menuDiv.innerHTML+=`
+    menuDiv.innerHTML += `
     <div class="menu-item">
       <div class="menu-left">
-        <div class="dish-name">${displayName}</div>
+        <div class="dish-name">${name}</div>
         <div class="rating">⭐ ${rating}</div>
         <div class="price">₹${price}</div>
       </div>
       <div class="menu-right">
         <img src="${dish.img}">
-        <button class="add-btn" onclick="confirmOrder('${displayName}')">ADD</button>
+        <button class="add-btn" onclick="confirmOrder('${name}')">ADD</button>
       </div>
     </div>`;
   }
 }
 
 function confirmOrder(dishName){
+  let endTime = new Date().getTime();
+  let seconds = ((endTime-startTime)/1000).toFixed(2);
 
-  let endTime=new Date().getTime();
-  let seconds=((endTime-startTime)/1000).toFixed(2);
+  console.log({
+    restaurantSize: allDishes.length,
+    dish: dishName,
+    decisionTime: seconds,
+    timestamp: new Date().toISOString()
+  });
 
-  let log = {
-    dish:dishName,
-    time:seconds,
-    timestamp:new Date().toISOString()
-  };
-
-  console.log(log);
-
-  let existing=JSON.parse(localStorage.getItem("experimentData"))||[];
-  existing.push(log);
-  localStorage.setItem("experimentData",JSON.stringify(existing));
-
-  document.getElementById("menu").style.display="none";
+  document.getElementById("app").style.display="none";
   document.getElementById("confirmation").style.display="flex";
 }
 
