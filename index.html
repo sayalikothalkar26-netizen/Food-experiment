@@ -15,8 +15,8 @@ body {
 .app {
   max-width: 390px;
   margin: auto;
-  min-height: 100vh;
   background: #fff;
+  min-height: 100vh;
 }
 
 .header {
@@ -139,36 +139,34 @@ body {
 <div id="confirmation" style="display:none;" class="confirmation">
   <div class="tick-circle">✓</div>
   <h2>Your item has been added to cart.</h2>
+  <p id="timeTaken"></p>
 </div>
 
 </div>
 
 <script>
 
-const dishes = [
-"Paneer Butter Masala",
-"Paneer Tikka",
-"Palak Paneer",
-"Dal Tadka",
-"Chole Bhature",
-"Rajma Chawal",
-"Veg Biryani",
-"Aloo Paratha",
-"Masala Dosa",
-"Kadai Paneer",
-"Malai Kofta",
-"Baingan Bharta",
-"Veg Fried Rice",
-"Paneer Lababdar",
-"Veg Pulao",
-"Sambar Rice",
-"Matar Paneer",
-"Jeera Rice",
-"Pav Bhaji",
-"Idli Sambar"
+// TIMER VARIABLE
+let startTime = 0;
+
+// Stable Dish + Image Mapping
+const dishData = [
+{ name: "Paneer Butter Masala", img: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Paneer_butter_masala.jpg" },
+{ name: "Paneer Tikka", img: "https://upload.wikimedia.org/wikipedia/commons/3/35/Paneer_Tikka.jpg" },
+{ name: "Palak Paneer", img: "https://upload.wikimedia.org/wikipedia/commons/a/a3/Palak_Paneer.jpg" },
+{ name: "Dal Tadka", img: "https://upload.wikimedia.org/wikipedia/commons/3/3f/Dal_Tadka.jpg" },
+{ name: "Chole Bhature", img: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Chole_Bhature.jpg" },
+{ name: "Rajma Chawal", img: "https://upload.wikimedia.org/wikipedia/commons/5/5f/Rajma_Chawal.jpg" },
+{ name: "Veg Biryani", img: "https://upload.wikimedia.org/wikipedia/commons/3/3b/Veg_Biryani.jpg" },
+{ name: "Aloo Paratha", img: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Aloo_Paratha.jpg" },
+{ name: "Masala Dosa", img: "https://upload.wikimedia.org/wikipedia/commons/9/9f/Masala_Dosa.jpg" },
+{ name: "Kadai Paneer", img: "https://upload.wikimedia.org/wikipedia/commons/4/4f/Kadai_Paneer.jpg" }
 ];
 
 function openMenu(count) {
+
+  startTime = new Date().getTime(); // START TIMER
+
   document.getElementById("home").style.display = "none";
   const menuDiv = document.getElementById("menu");
   menuDiv.style.display = "block";
@@ -176,21 +174,19 @@ function openMenu(count) {
 
   for (let i = 0; i < count; i++) {
 
-    let dishName = dishes[i % dishes.length];
+    let dish = dishData[i % dishData.length];
     let price = 150 + Math.floor(Math.random() * 300);
     let rating = (4 + Math.random() * 0.5).toFixed(1);
-
-    let imageUrl = "https://source.unsplash.com/300x300/?" + encodeURIComponent(dishName + " indian food");
 
     menuDiv.innerHTML += `
       <div class="menu-item">
         <div class="menu-left">
-          <div class="dish-name">${dishName}</div>
+          <div class="dish-name">${dish.name}</div>
           <div class="rating">⭐ ${rating}</div>
           <div class="price">₹${price}</div>
         </div>
         <div class="menu-right">
-          <img src="${imageUrl}" onerror="this.style.background='#ffe6ea'; this.remove();">
+          <img src="${dish.img}" onerror="this.style.background='#ffe6ea'; this.remove();">
           <button class="add-btn" onclick="confirmOrder()">ADD</button>
         </div>
       </div>
@@ -199,8 +195,16 @@ function openMenu(count) {
 }
 
 function confirmOrder() {
+
+  let endTime = new Date().getTime();
+  let seconds = ((endTime - startTime) / 1000).toFixed(2);
+
+  console.log("Decision Time (seconds):", seconds);
+
   document.getElementById("menu").style.display = "none";
   document.getElementById("confirmation").style.display = "flex";
+  document.getElementById("timeTaken").innerText =
+    "Decision Time: " + seconds + " seconds";
 }
 
 </script>
