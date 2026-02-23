@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food Experiment</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #ffffff;
+}
+
+.container {
+  max-width: 390px;
+  margin: auto;
+  padding: 20px;
+}
+
+h2 {
+  text-align: center;
+}
+
+.restaurant-btn {
+  width: 100%;
+  padding: 15px;
+  margin: 10px 0;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.card {
+  border: 1px solid #eee;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+.card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.add-btn {
+  margin-top: 8px;
+  padding: 8px;
+  width: 100%;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="home">
+  <h2>Select a Restaurant</h2>
+  <button class="restaurant-btn" onclick="openMenu(20)">Restaurant 1</button>
+  <button class="restaurant-btn" onclick="openMenu(40)">Restaurant 2</button>
+  <button class="restaurant-btn" onclick="openMenu(80)">Restaurant 3</button>
+  <button class="restaurant-btn" onclick="openMenu(120)">Restaurant 4</button>
+</div>
+
+<div class="container" id="menu" style="display:none;"></div>
+
+<div class="container" id="confirmation" style="display:none;">
+  <h2>Your item has been added to cart.</h2>
+</div>
+
+<script>
+
+const dishes = [
+"Paneer Butter Masala",
+"Veg Biryani",
+"Palak Paneer",
+"Chole Bhature",
+"Rajma Chawal",
+"Aloo Paratha",
+"Masala Dosa",
+"Veg Pulao",
+"Dal Tadka",
+"Kadai Paneer",
+"Malai Kofta",
+"Baingan Bharta",
+"Veg Fried Rice",
+"Paneer Tikka",
+"Sambar Rice",
+"Mix Veg Curry",
+"Matar Paneer",
+"Jeera Rice",
+"Pav Bhaji",
+"Idli Sambar"
+];
+
+function openMenu(count) {
+  document.getElementById("home").style.display = "none";
+  const menuDiv = document.getElementById("menu");
+  menuDiv.style.display = "block";
+  menuDiv.innerHTML = "<h2>Menu</h2>";
+
+  for (let i = 0; i < count; i++) {
+
+    let dishName = dishes[i % dishes.length];
+    let price = 150 + Math.floor(Math.random() * 300);
+    let rating = (4 + Math.random() * 0.5).toFixed(1);
+
+    menuDiv.innerHTML += `
+      <div class="card">
+        <img src="https://source.unsplash.com/400x300/?indian,food,${i}" />
+        <h3>${dishName} ${i+1}</h3>
+        <p>Authentic Indian vegetarian delicacy.</p>
+        <p>₹${price} | ⭐ ${rating}</p>
+        <button class="add-btn" onclick="confirmOrder()">Add to Cart</button>
+      </div>
+    `;
+  }
+}
+
+function confirmOrder() {
+  document.getElementById("menu").style.display = "none";
+  document.getElementById("confirmation").style.display = "block";
+}
+
+</script>
+
+</body>
+</html>
