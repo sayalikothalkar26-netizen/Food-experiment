@@ -20,25 +20,11 @@ body{
   align-items:center;
   justify-content:center;
   text-align:center;
-  position:relative;
-  overflow:hidden;
 }
 
 .home h1{
-  font-size:28px;
   margin-bottom:30px;
 }
-
-.decor{
-  position:absolute;
-  font-size:40px;
-  opacity:0.15;
-}
-
-.decor1{top:10%;left:10%;}
-.decor2{top:20%;right:15%;}
-.decor3{bottom:15%;left:20%;}
-.decor4{bottom:10%;right:10%;}
 
 .restaurant-btn{
   width:80%;
@@ -56,7 +42,7 @@ body{
 .r3{ background:#ffb3c6; }
 .r4{ background:#ffa6c1; }
 
-/* MENU PAGE */
+/* MENU */
 .app{
   max-width:390px;
   margin:auto;
@@ -79,29 +65,15 @@ body{
   border-bottom:1px solid #f0f0f0;
 }
 
-.menu-left{
-  width:60%;
-}
+.menu-left{ width:60%; }
 
-.dish-name{
-  font-weight:600;
-  font-size:15px;
-}
+.dish-name{ font-weight:600; font-size:15px; }
 
-.rating{
-  font-size:13px;
-  color:#388e3c;
-  margin:4px 0;
-}
+.rating{ font-size:13px; color:#388e3c; margin:4px 0; }
 
-.price{
-  font-size:14px;
-}
+.price{ font-size:14px; }
 
-.menu-right{
-  width:110px;
-  position:relative;
-}
+.menu-right{ width:110px; position:relative; }
 
 .menu-right img{
   width:100%;
@@ -152,11 +124,6 @@ body{
 <body>
 
 <div id="home" class="home">
-  <div class="decor decor1">🍅</div>
-  <div class="decor decor2">🥘</div>
-  <div class="decor decor3">🌶️</div>
-  <div class="decor decor4">🍛</div>
-
   <h1>Select Restaurant</h1>
   <button class="restaurant-btn r1" onclick="openMenu(15)">Restaurant 1</button>
   <button class="restaurant-btn r2" onclick="openMenu(30)">Restaurant 2</button>
@@ -180,29 +147,53 @@ body{
 
 let startTime = 0;
 
-const realImages = [/* same 90 filenames here (keep unchanged) */];
-
-const pinkNames = [
-"Veg Korma","Paneer Do Pyaza","Mushroom Masala",
-"Tawa Pulao","Hara Bhara Kebab"
+/* ===== YOUR 90 REAL IMAGES ===== */
+const realImages = [
+"dal-makhani.jpg","jalebi.jpg","south-indian-platter.jpg","palak-gravy.jpg",
+"bhindi-fry.jpg","bhindi-dry.jpg","bhindi-masala.jpg","pack-of-roti.jpg",
+"malai-mushroom-gravy.jpg","rajma-gravy-masala.jpg","malai-rajma-gravy.jpg",
+"prawns-rice-thali.jpg","veg-chatpata.jpg","gobi-paratha.jpg","dal-tadka-full.jpg",
+"soya-munchurian-dry.jpg","palak-paratha.jpg","crispy-veg-snack.jpg",
+"veg-paneer-roll.jpg","aloo-kofta.jpg","masala-maggi.jpg","2-uttapam.jpg",
+"tandoori-roti.jpg","plain-veg-momos.jpg","rose-rasmalai.jpg",
+"kadhi-pakora-rice-meal.jpg","gulab-jamun-pista-dessert.jpg",
+"chicken-tangdi-gravy.jpg","aloo-sandwich.jpg","veg-gravy-momos.jpg",
+"kurkure-onion-bhaje.jpg","dahi-vada.jpg","chicken-momos.jpg",
+"gulab-jamun.jpg","pista-kulfi.jpg","paneer-full-meal.jpg","veg-momos.jpg",
+"appe.jpg","rasmalai.jpg","chicken-dum-biryani.jpg","butter-pav-bhaji.jpg",
+"millet-khichadi.jpg","dal-khichadi.jpg","oats-khichadi.jpg","methi-thepla.jpg",
+"creamy-mushroom.jpg","red-lentil-curry.jpg","chicken-crispy-manchurian.jpg",
+"fried-tandoori-chicken.jpg","chicken-tangdi.jpg","aloo-jeera.jpg",
+"bhindi-do-pyaaza.jpg","corn-masala.jpg","methi-malai-matar.jpg",
+"veg-kolhapuri.jpg","aloo-paratha.jpg","kadai-paneer.jpg","baingan-bharta.jpg",
+"curd-rice.jpg","veg-pulao.jpg","lemon-rice.jpg","paneer-biryani.jpg",
+"veg-biryani.jpg","chicken-biryani.jpg","rava-dosa.jpg","uttapam.jpg",
+"plain-dosa.jpg","masala-dosa.jpg","medu-vada.jpg","idli-sambar.jpg",
+"pav-bhaji.jpg","rajma-chawal.jpg","samosa.jpg","vada-pav.jpg",
+"manchurian-gravy.jpg","chilli-paneer.jpg","schezwan-noodles.jpg",
+"veg-fried-rice.jpg","veg-hakka-noodles.jpg","gajar-halwa.jpg",
+"paneer-lababdar.jpg","malai-kofta.jpg","garlic-naan.jpg","butter-naan.jpg",
+"dal-tadka.jpg","palak-paneer.jpg","paneer-tikka.jpg","paneer-butter-masala.jpg"
 ];
 
-const yellowNames = [
-"Dahi Bhalla","Veg Cutlet","Tomato Soup",
-"Jeera Rice","Khichdi"
-];
+/* Placeholder names */
+const pinkNames = ["Veg Korma","Paneer Do Pyaza","Mushroom Masala","Tawa Pulao","Hara Bhara Kebab"];
+const yellowNames = ["Dahi Bhalla","Veg Cutlet","Tomato Soup","Jeera Rice","Khichdi"];
 
 let allDishes = [];
 
+/* Add 90 real dishes */
 realImages.forEach(img=>{
   allDishes.push({name:img,img:"images/"+img});
 });
 
+/* Add 10 placeholders */
 for(let i=0;i<5;i++){
   allDishes.push({name:pinkNames[i],img:"images/pink-placeholder.jpg"});
   allDishes.push({name:yellowNames[i],img:"images/yellow-placeholder.jpg"});
 }
 
+/* Shuffle */
 allDishes.sort(()=>Math.random()-0.5);
 
 function formatName(filename){
@@ -211,7 +202,7 @@ function formatName(filename){
 }
 
 function openMenu(count){
-  startTime=new Date().getTime();
+  startTime = new Date().getTime();
   document.getElementById("home").style.display="none";
   document.getElementById("app").style.display="block";
 
@@ -240,12 +231,7 @@ function openMenu(count){
   }
 }
 
-function confirmOrder(dishName){
-  let endTime=new Date().getTime();
-  let seconds=((endTime-startTime)/1000).toFixed(2);
-
-  console.log({dish:dishName,time:seconds});
-
+function confirmOrder(){
   document.getElementById("app").style.display="none";
   document.getElementById("confirmation").style.display="flex";
 }
