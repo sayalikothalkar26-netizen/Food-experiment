@@ -8,84 +8,160 @@
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: #ffffff;
 }
 
-.container {
+.app {
   max-width: 390px;
   margin: auto;
-  padding: 20px;
+  min-height: 100vh;
+  background: #fff;
 }
 
-h2 {
-  text-align: center;
+.header {
+  background: #e23744;
+  color: white;
+  padding: 16px;
+  font-size: 18px;
+  font-weight: 600;
 }
 
-.restaurant-btn {
-  width: 100%;
-  padding: 15px;
-  margin: 10px 0;
+.restaurant-item {
+  padding: 18px;
+  border-bottom: 1px solid #eee;
   font-size: 16px;
   cursor: pointer;
 }
 
-.card {
-  border: 1px solid #eee;
-  padding: 10px;
-  margin-bottom: 15px;
+.restaurant-item:hover {
+  background: #fafafa;
 }
 
-.card img {
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.menu-left {
+  width: 60%;
+}
+
+.dish-name {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.rating {
+  font-size: 13px;
+  color: #388e3c;
+  margin: 4px 0;
+}
+
+.price {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.menu-right {
+  width: 110px;
+  position: relative;
+}
+
+.menu-right img {
   width: 100%;
-  height: 150px;
+  height: 90px;
   object-fit: cover;
+  border-radius: 8px;
+  background: #ffe6ea;
 }
 
 .add-btn {
-  margin-top: 8px;
-  padding: 8px;
-  width: 100%;
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border: 1px solid #e23744;
+  color: #e23744;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 6px 18px;
+  border-radius: 6px;
   cursor: pointer;
+}
+
+.add-btn:hover {
+  background: #e23744;
+  color: white;
+}
+
+.confirmation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  text-align: center;
+}
+
+.tick-circle {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #2ecc71;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: white;
+  margin-bottom: 20px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container" id="home">
-  <h2>Select a Restaurant</h2>
-  <button class="restaurant-btn" onclick="openMenu(20)">Restaurant 1</button>
-  <button class="restaurant-btn" onclick="openMenu(40)">Restaurant 2</button>
-  <button class="restaurant-btn" onclick="openMenu(80)">Restaurant 3</button>
-  <button class="restaurant-btn" onclick="openMenu(120)">Restaurant 4</button>
+<div class="app">
+
+<div id="home">
+  <div class="header">Select Restaurant</div>
+  <div class="restaurant-item" onclick="openMenu(20)">Restaurant 1</div>
+  <div class="restaurant-item" onclick="openMenu(40)">Restaurant 2</div>
+  <div class="restaurant-item" onclick="openMenu(80)">Restaurant 3</div>
+  <div class="restaurant-item" onclick="openMenu(120)">Restaurant 4</div>
 </div>
 
-<div class="container" id="menu" style="display:none;"></div>
+<div id="menu" style="display:none;"></div>
 
-<div class="container" id="confirmation" style="display:none;">
+<div id="confirmation" style="display:none;" class="confirmation">
+  <div class="tick-circle">✓</div>
   <h2>Your item has been added to cart.</h2>
+</div>
+
 </div>
 
 <script>
 
 const dishes = [
 "Paneer Butter Masala",
-"Veg Biryani",
+"Paneer Tikka",
 "Palak Paneer",
+"Dal Tadka",
 "Chole Bhature",
 "Rajma Chawal",
+"Veg Biryani",
 "Aloo Paratha",
 "Masala Dosa",
-"Veg Pulao",
-"Dal Tadka",
 "Kadai Paneer",
 "Malai Kofta",
 "Baingan Bharta",
 "Veg Fried Rice",
-"Paneer Tikka",
+"Paneer Lababdar",
+"Veg Pulao",
 "Sambar Rice",
-"Mix Veg Curry",
 "Matar Paneer",
 "Jeera Rice",
 "Pav Bhaji",
@@ -96,7 +172,7 @@ function openMenu(count) {
   document.getElementById("home").style.display = "none";
   const menuDiv = document.getElementById("menu");
   menuDiv.style.display = "block";
-  menuDiv.innerHTML = "<h2>Menu</h2>";
+  menuDiv.innerHTML = '<div class="header">Menu</div>';
 
   for (let i = 0; i < count; i++) {
 
@@ -104,13 +180,19 @@ function openMenu(count) {
     let price = 150 + Math.floor(Math.random() * 300);
     let rating = (4 + Math.random() * 0.5).toFixed(1);
 
+    let imageUrl = "https://source.unsplash.com/300x300/?" + encodeURIComponent(dishName + " indian food");
+
     menuDiv.innerHTML += `
-      <div class="card">
-        <img src="https://source.unsplash.com/400x300/?indian,food,${i}" />
-        <h3>${dishName} ${i+1}</h3>
-        <p>Authentic Indian vegetarian delicacy.</p>
-        <p>₹${price} | ⭐ ${rating}</p>
-        <button class="add-btn" onclick="confirmOrder()">Add to Cart</button>
+      <div class="menu-item">
+        <div class="menu-left">
+          <div class="dish-name">${dishName}</div>
+          <div class="rating">⭐ ${rating}</div>
+          <div class="price">₹${price}</div>
+        </div>
+        <div class="menu-right">
+          <img src="${imageUrl}" onerror="this.style.background='#ffe6ea'; this.remove();">
+          <button class="add-btn" onclick="confirmOrder()">ADD</button>
+        </div>
       </div>
     `;
   }
@@ -118,7 +200,7 @@ function openMenu(count) {
 
 function confirmOrder() {
   document.getElementById("menu").style.display = "none";
-  document.getElementById("confirmation").style.display = "block";
+  document.getElementById("confirmation").style.display = "flex";
 }
 
 </script>
