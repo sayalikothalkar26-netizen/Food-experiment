@@ -31,11 +31,6 @@ body{
   padding:18px;
   border-bottom:1px solid #eee;
   cursor:pointer;
-  font-size:16px;
-}
-
-.restaurant-item:hover{
-  background:#fafafa;
 }
 
 .menu-item{
@@ -62,7 +57,6 @@ body{
 
 .price{
   font-size:14px;
-  font-weight:500;
 }
 
 .menu-right{
@@ -75,13 +69,6 @@ body{
   height:90px;
   object-fit:cover;
   border-radius:8px;
-}
-
-.placeholder{
-  width:100%;
-  height:90px;
-  border-radius:8px;
-  background:#ffe6ea;
 }
 
 .add-btn{
@@ -107,19 +94,6 @@ body{
   height:80vh;
   text-align:center;
 }
-
-.tick-circle{
-  width:90px;
-  height:90px;
-  border-radius:50%;
-  background:#2ecc71;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:40px;
-  color:white;
-  margin-bottom:20px;
-}
 </style>
 </head>
 
@@ -138,9 +112,7 @@ body{
 <div id="menu" style="display:none;"></div>
 
 <div id="confirmation" style="display:none;" class="confirmation">
-  <div class="tick-circle">✓</div>
-  <h2>Your item has been added to cart.</h2>
-  <p id="timeTaken"></p>
+  <h2>Order Confirmed</h2>
 </div>
 
 </div>
@@ -149,35 +121,72 @@ body{
 
 let startTime = 0;
 
-const realDishes = [
-{ name:"Paneer Butter Masala", img:"https://source.unsplash.com/400x400/?paneer,butter,masala" },
-{ name:"Paneer Tikka", img:"https://source.unsplash.com/400x400/?paneer,tikka" },
-{ name:"Palak Paneer", img:"https://source.unsplash.com/400x400/?palak,paneer" },
-{ name:"Dal Tadka", img:"https://source.unsplash.com/400x400/?dal,tadka" },
-{ name:"Chole Bhature", img:"https://source.unsplash.com/400x400/?chole,bhature" },
-{ name:"Rajma Chawal", img:"https://source.unsplash.com/400x400/?rajma,chawal" },
-{ name:"Veg Biryani", img:"https://source.unsplash.com/400x400/?veg,biryani" },
-{ name:"Masala Dosa", img:"https://source.unsplash.com/400x400/?masala,dosa" },
-{ name:"Kadai Paneer", img:"https://source.unsplash.com/400x400/?kadai,paneer" },
-{ name:"Aloo Paratha", img:"https://source.unsplash.com/400x400/?aloo,paratha" }
+// ---- YOUR 36 REAL IMAGE FILENAMES ----
+// IMPORTANT: Replace with your exact filenames
+const realImageFiles = [
+"paneer-butter-masala.jpg",
+"paneer-tikka.jpg",
+"palak-paneer.jpg",
+"dal-tadka.jpg",
+"chole-masala.jpg",
+"rajma-masala.jpg",
+"veg-biryani.jpg",
+"masala-dosa.jpg",
+"kadai-paneer.jpg",
+"aloo-paratha.jpg"
 ];
 
-while(realDishes.length < 50){
-  realDishes.push(realDishes[realDishes.length % 10]);
+// If you uploaded 36, add them all here.
+
+while(realImageFiles.length < 36){
+  realImageFiles.push(realImageFiles[realImageFiles.length % 10]);
 }
 
-const blankDishes = [];
-for(let i=1;i<=30;i++){
-  blankDishes.push({ name:"Special Dish "+i, img:null });
+// ---- Build full 120 structure ----
+
+const allDishes = [];
+
+// 36 real
+for(let i=0;i<36;i++){
+  allDishes.push({
+    type:"real",
+    img:"images/"+realImageFiles[i]
+  });
 }
 
-const allDishes = [
-  ...realDishes,
-  ...blankDishes,
-  ...realDishes.slice(0,40)
-];
+// 30 pink
+for(let i=0;i<30;i++){
+  allDishes.push({
+    type:"pink",
+    img:"images/pink-placeholder.jpg"
+  });
+}
+
+// 20 yellow
+for(let i=0;i<20;i++){
+  allDishes.push({
+    type:"yellow",
+    img:"images/yellow-placeholder.jpg"
+  });
+}
+
+// 34 repeats
+for(let i=0;i<34;i++){
+  allDishes.push({
+    type:"real",
+    img:"images/"+realImageFiles[i % 36]
+  });
+}
+
+function formatName(filename){
+  return filename
+    .replace(".jpg","")
+    .replace(/-/g," ")
+    .replace(/\b\w/g,l=>l.toUpperCase());
+}
 
 function openMenu(count){
+
   startTime = new Date().getTime();
 
   document.getElementById("home").style.display="none";
@@ -191,33 +200,35 @@ function openMenu(count){
     let price=150+Math.floor(Math.random()*300);
     let rating=(4+Math.random()*0.5).toFixed(1);
 
-    let imageHTML = dish.img
-      ? `<img src="${dish.img}" alt="${dish.name}">`
-      : `<div class="placeholder"></div>`;
+    let name = dish.type==="real"
+      ? formatName(realImageFiles[i % 36])
+      : "Special Item";
 
     menuDiv.innerHTML+=`
     <div class="menu-item">
       <div class="menu-left">
-        <div class="dish-name">${dish.name}</div>
+        <div class="dish-name">${name}</div>
         <div class="rating">⭐ ${rating}</div>
         <div class="price">₹${price}</div>
       </div>
       <div class="menu-right">
-        ${imageHTML}
-        <button class="add-btn" onclick="confirmOrder()">ADD</button>
+        <img src="${dish.img}">
+        <button class="add-btn" onclick="confirmOrder('${name}')">ADD</button>
       </div>
     </div>`;
   }
 }
 
-function confirmOrder(){
+function confirmOrder(dishName){
+
   let endTime=new Date().getTime();
   let seconds=((endTime-startTime)/1000).toFixed(2);
 
+  console.log("Dish:", dishName);
+  console.log("Decision Time:", seconds);
+
   document.getElementById("menu").style.display="none";
   document.getElementById("confirmation").style.display="flex";
-  document.getElementById("timeTaken").innerText=
-    "Decision Time: "+seconds+" seconds";
 }
 
 </script>
