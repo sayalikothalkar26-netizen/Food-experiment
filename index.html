@@ -6,119 +6,119 @@
 <title>Food Experiment</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: #ffffff;
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  background:#f8f8f8;
 }
 
-.app {
-  max-width: 390px;
-  margin: auto;
-  background: #fff;
-  min-height: 100vh;
+.app{
+  max-width:390px;
+  margin:auto;
+  background:#fff;
+  min-height:100vh;
 }
 
-.header {
-  background: #e23744;
-  color: white;
-  padding: 16px;
-  font-size: 18px;
-  font-weight: 600;
+.header{
+  background:#e23744;
+  color:#fff;
+  padding:16px;
+  font-size:18px;
+  font-weight:600;
 }
 
-.restaurant-item {
-  padding: 18px;
-  border-bottom: 1px solid #eee;
-  font-size: 16px;
-  cursor: pointer;
+.restaurant-item{
+  padding:18px;
+  border-bottom:1px solid #eee;
+  cursor:pointer;
+  font-size:16px;
 }
 
-.restaurant-item:hover {
-  background: #fafafa;
+.restaurant-item:hover{
+  background:#fafafa;
 }
 
-.menu-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 14px;
-  border-bottom: 1px solid #f0f0f0;
+.menu-item{
+  display:flex;
+  justify-content:space-between;
+  padding:14px;
+  border-bottom:1px solid #f0f0f0;
 }
 
-.menu-left {
-  width: 60%;
+.menu-left{
+  width:60%;
 }
 
-.dish-name {
-  font-weight: 600;
-  font-size: 15px;
+.dish-name{
+  font-weight:600;
+  font-size:15px;
 }
 
-.rating {
-  font-size: 13px;
-  color: #388e3c;
-  margin: 4px 0;
+.rating{
+  font-size:13px;
+  color:#388e3c;
+  margin:4px 0;
 }
 
-.price {
-  font-size: 14px;
-  font-weight: 500;
+.price{
+  font-size:14px;
+  font-weight:500;
 }
 
-.menu-right {
-  width: 110px;
-  position: relative;
+.menu-right{
+  width:110px;
+  position:relative;
 }
 
-.menu-right img {
-  width: 100%;
-  height: 90px;
-  object-fit: cover;
-  border-radius: 8px;
+.menu-right img{
+  width:100%;
+  height:90px;
+  object-fit:cover;
+  border-radius:8px;
 }
 
-.placeholder {
-  width: 100%;
-  height: 90px;
-  border-radius: 8px;
-  background: #ffe6ea;
+.placeholder{
+  width:100%;
+  height:90px;
+  border-radius:8px;
+  background:#ffe6ea;
 }
 
-.add-btn {
-  position: absolute;
-  bottom: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: white;
-  border: 1px solid #e23744;
-  color: #e23744;
-  font-weight: 600;
-  font-size: 13px;
-  padding: 6px 18px;
-  border-radius: 6px;
-  cursor: pointer;
+.add-btn{
+  position:absolute;
+  bottom:-8px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#fff;
+  border:1px solid #e23744;
+  color:#e23744;
+  font-weight:600;
+  font-size:13px;
+  padding:6px 18px;
+  border-radius:6px;
+  cursor:pointer;
 }
 
-.confirmation {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 80vh;
-  text-align: center;
+.confirmation{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  height:80vh;
+  text-align:center;
 }
 
-.tick-circle {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  background: #2ecc71;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 40px;
-  color: white;
-  margin-bottom: 20px;
+.tick-circle{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  background:#2ecc71;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:40px;
+  color:white;
+  margin-bottom:20px;
 }
 </style>
 </head>
@@ -149,33 +149,28 @@ body {
 
 let startTime = 0;
 
-// 50 REAL IMAGE DISHES (Fixed Unsplash Photo IDs)
-
 const realDishes = [
-{ name: "Paneer Butter Masala", img: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398" },
-{ name: "Paneer Tikka", img: "https://images.unsplash.com/photo-1596797038530-2c107229654b" },
-{ name: "Palak Paneer", img: "https://images.unsplash.com/photo-1625944525533-473f1a3d54c3" },
-{ name: "Dal Tadka", img: "https://images.unsplash.com/photo-1585937421612-70a008356fbe" },
-{ name: "Chole Bhature", img: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec" },
-{ name: "Rajma Chawal", img: "https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56" },
-{ name: "Veg Biryani", img: "https://images.unsplash.com/photo-1604908554168-3b63b7f0d8f2" },
-{ name: "Aloo Paratha", img: "https://images.unsplash.com/photo-1617692855027-33b14f061079" },
-{ name: "Masala Dosa", img: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc" },
-{ name: "Kadai Paneer", img: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7" }
+{ name:"Paneer Butter Masala", img:"https://source.unsplash.com/400x400/?paneer,butter,masala" },
+{ name:"Paneer Tikka", img:"https://source.unsplash.com/400x400/?paneer,tikka" },
+{ name:"Palak Paneer", img:"https://source.unsplash.com/400x400/?palak,paneer" },
+{ name:"Dal Tadka", img:"https://source.unsplash.com/400x400/?dal,tadka" },
+{ name:"Chole Bhature", img:"https://source.unsplash.com/400x400/?chole,bhature" },
+{ name:"Rajma Chawal", img:"https://source.unsplash.com/400x400/?rajma,chawal" },
+{ name:"Veg Biryani", img:"https://source.unsplash.com/400x400/?veg,biryani" },
+{ name:"Masala Dosa", img:"https://source.unsplash.com/400x400/?masala,dosa" },
+{ name:"Kadai Paneer", img:"https://source.unsplash.com/400x400/?kadai,paneer" },
+{ name:"Aloo Paratha", img:"https://source.unsplash.com/400x400/?aloo,paratha" }
 ];
 
-// Expand to 50 by repeating variations
 while(realDishes.length < 50){
   realDishes.push(realDishes[realDishes.length % 10]);
 }
 
-// 30 BLANK DISHES
 const blankDishes = [];
 for(let i=1;i<=30;i++){
-  blankDishes.push({ name: "Special Dish "+i, img: null });
+  blankDishes.push({ name:"Special Dish "+i, img:null });
 }
 
-// Combine to 120
 const allDishes = [
   ...realDishes,
   ...blankDishes,
@@ -183,7 +178,6 @@ const allDishes = [
 ];
 
 function openMenu(count){
-
   startTime = new Date().getTime();
 
   document.getElementById("home").style.display="none";
@@ -198,7 +192,7 @@ function openMenu(count){
     let rating=(4+Math.random()*0.5).toFixed(1);
 
     let imageHTML = dish.img
-      ? `<img src="${dish.img}?w=300&h=300&fit=crop">`
+      ? `<img src="${dish.img}" alt="${dish.name}">`
       : `<div class="placeholder"></div>`;
 
     menuDiv.innerHTML+=`
