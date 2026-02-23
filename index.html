@@ -6,94 +6,23 @@
 <title>Food Experiment</title>
 
 <style>
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  background:#f8f8f8;
-}
-
-.app{
-  max-width:390px;
-  margin:auto;
-  background:#fff;
-  min-height:100vh;
-}
-
-.header{
-  background:#e23744;
-  color:#fff;
-  padding:16px;
-  font-size:18px;
-  font-weight:600;
-}
-
-.restaurant-item{
-  padding:18px;
-  border-bottom:1px solid #eee;
-  cursor:pointer;
-}
-
-.menu-item{
-  display:flex;
-  justify-content:space-between;
-  padding:14px;
-  border-bottom:1px solid #f0f0f0;
-}
-
-.menu-left{
-  width:60%;
-}
-
-.dish-name{
-  font-weight:600;
-  font-size:15px;
-}
-
-.rating{
-  font-size:13px;
-  color:#388e3c;
-  margin:4px 0;
-}
-
-.price{
-  font-size:14px;
-}
-
-.menu-right{
-  width:110px;
-  position:relative;
-}
-
-.menu-right img{
-  width:100%;
-  height:90px;
-  object-fit:cover;
-  border-radius:8px;
-}
-
-.add-btn{
-  position:absolute;
-  bottom:-8px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#fff;
-  border:1px solid #e23744;
-  color:#e23744;
-  font-weight:600;
-  font-size:13px;
-  padding:6px 18px;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-.confirmation{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  height:80vh;
-  text-align:center;
-}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f8f8f8;}
+.app{max-width:390px;margin:auto;background:#fff;min-height:100vh;}
+.header{background:#e23744;color:#fff;padding:16px;font-size:18px;font-weight:600;}
+.restaurant-item{padding:18px;border-bottom:1px solid #eee;cursor:pointer;}
+.menu-item{display:flex;justify-content:space-between;padding:14px;border-bottom:1px solid #f0f0f0;}
+.menu-left{width:60%;}
+.dish-name{font-weight:600;font-size:15px;}
+.rating{font-size:13px;color:#388e3c;margin:4px 0;}
+.price{font-size:14px;}
+.menu-right{width:110px;position:relative;}
+.menu-right img{width:100%;height:90px;object-fit:cover;border-radius:8px;}
+.add-btn{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);
+background:#fff;border:1px solid #e23744;color:#e23744;
+font-weight:600;font-size:13px;padding:6px 18px;border-radius:6px;cursor:pointer;}
+.confirmation{display:flex;flex-direction:column;align-items:center;justify-content:center;height:80vh;text-align:center;}
+.tick-circle{width:90px;height:90px;border-radius:50%;background:#2ecc71;
+display:flex;align-items:center;justify-content:center;font-size:40px;color:white;margin-bottom:20px;}
 </style>
 </head>
 
@@ -112,7 +41,8 @@ body{
 <div id="menu" style="display:none;"></div>
 
 <div id="confirmation" style="display:none;" class="confirmation">
-  <h2>Order Confirmed</h2>
+  <div class="tick-circle">✓</div>
+  <h2>Item Added to Cart</h2>
 </div>
 
 </div>
@@ -121,9 +51,10 @@ body{
 
 let startTime = 0;
 
-// ---- YOUR 36 REAL IMAGE FILENAMES ----
-// IMPORTANT: Replace with your exact filenames
-const realImageFiles = [
+/* ---- 36 REAL IMAGE FILENAMES ---- */
+/* IMPORTANT: Replace these with YOUR exact filenames */
+
+const realImages = [
 "paneer-butter-masala.jpg",
 "paneer-tikka.jpg",
 "palak-paneer.jpg",
@@ -136,45 +67,61 @@ const realImageFiles = [
 "aloo-paratha.jpg"
 ];
 
-// If you uploaded 36, add them all here.
-
-while(realImageFiles.length < 36){
-  realImageFiles.push(realImageFiles[realImageFiles.length % 10]);
+while(realImages.length < 36){
+  realImages.push(realImages[realImages.length % 10]);
 }
 
-// ---- Build full 120 structure ----
+/* ---- 50 REALISTIC FOOD NAMES (NO IMAGE GROUP) ---- */
+
+const placeholderNames = [
+"Veg Kolhapuri","Methi Malai Mutter","Corn Masala","Bhindi Do Pyaza",
+"Aloo Jeera","Tawa Pulao","Hyderabadi Veg Biryani","Cheese Paratha",
+"Paneer Kulcha","Mushroom Masala","Veg Korma","Stuffed Capsicum",
+"Schezwan Fried Rice","Veg Manchurian","Chilli Garlic Noodles",
+"Hara Bhara Kebab","Dahi Bhalla","Bombay Sandwich","Pav Bhaji",
+"Khichdi","Curd Rice","Tomato Soup","Sweet Corn Soup",
+"Veg Momos","Tandoori Broccoli","Malai Chaap","Matar Mushroom",
+"Paneer Do Pyaza","Veg Handi","Kofta Curry",
+"Sabudana Khichdi","Thepla","Masala Khichdi","Onion Uttapam",
+"Cheese Dosa","Rava Idli","Gobi Manchurian","Veg Spring Roll",
+"Malai Lassi","Jalebi","Kheer","Besan Ladoo",
+"Rasmalai","Moong Dal Halwa","Pineapple Sheera",
+"Fruit Custard","Chocolate Barfi","Pista Kulfi","Rabri","Mango Shrikhand"
+];
+
+/* ---- BUILD 120 ITEMS ---- */
 
 const allDishes = [];
 
-// 36 real
+/* 36 real */
 for(let i=0;i<36;i++){
   allDishes.push({
-    type:"real",
-    img:"images/"+realImageFiles[i]
+    name: realImages[i],
+    img: "images/"+realImages[i]
   });
 }
 
-// 30 pink
+/* 30 pink placeholder */
 for(let i=0;i<30;i++){
   allDishes.push({
-    type:"pink",
-    img:"images/pink-placeholder.jpg"
+    name: placeholderNames[i],
+    img: "images/pink-placeholder.jpg"
   });
 }
 
-// 20 yellow
-for(let i=0;i<20;i++){
+/* 20 yellow placeholder */
+for(let i=30;i<50;i++){
   allDishes.push({
-    type:"yellow",
-    img:"images/yellow-placeholder.jpg"
+    name: placeholderNames[i],
+    img: "images/yellow-placeholder.jpg"
   });
 }
 
-// 34 repeats
+/* 34 repeat from real */
 for(let i=0;i<34;i++){
   allDishes.push({
-    type:"real",
-    img:"images/"+realImageFiles[i % 36]
+    name: realImages[i % 36],
+    img: "images/"+realImages[i % 36]
   });
 }
 
@@ -200,20 +147,20 @@ function openMenu(count){
     let price=150+Math.floor(Math.random()*300);
     let rating=(4+Math.random()*0.5).toFixed(1);
 
-    let name = dish.type==="real"
-      ? formatName(realImageFiles[i % 36])
-      : "Special Item";
+    let displayName = dish.name.endsWith(".jpg")
+      ? formatName(dish.name)
+      : dish.name;
 
     menuDiv.innerHTML+=`
     <div class="menu-item">
       <div class="menu-left">
-        <div class="dish-name">${name}</div>
+        <div class="dish-name">${displayName}</div>
         <div class="rating">⭐ ${rating}</div>
         <div class="price">₹${price}</div>
       </div>
       <div class="menu-right">
         <img src="${dish.img}">
-        <button class="add-btn" onclick="confirmOrder('${name}')">ADD</button>
+        <button class="add-btn" onclick="confirmOrder('${displayName}')">ADD</button>
       </div>
     </div>`;
   }
@@ -224,8 +171,17 @@ function confirmOrder(dishName){
   let endTime=new Date().getTime();
   let seconds=((endTime-startTime)/1000).toFixed(2);
 
-  console.log("Dish:", dishName);
-  console.log("Decision Time:", seconds);
+  let log = {
+    dish:dishName,
+    time:seconds,
+    timestamp:new Date().toISOString()
+  };
+
+  console.log(log);
+
+  let existing=JSON.parse(localStorage.getItem("experimentData"))||[];
+  existing.push(log);
+  localStorage.setItem("experimentData",JSON.stringify(existing));
 
   document.getElementById("menu").style.display="none";
   document.getElementById("confirmation").style.display="flex";
