@@ -124,31 +124,36 @@ body{
 <body>
 
 <div id="home" class="home">
-  <h1>Select Restaurant</h1>
+<h1>Select Restaurant</h1>
+
 <button class="restaurant-btn r1" onclick="openMenu(15,1)">Restaurant 1</button>
 <button class="restaurant-btn r2" onclick="openMenu(30,2)">Restaurant 2</button>
 <button class="restaurant-btn r3" onclick="openMenu(60,3)">Restaurant 3</button>
 <button class="restaurant-btn r4" onclick="openMenu(100,4)">Restaurant 4</button>
+
 </div>
 
 <div id="app" style="display:none;">
-  <div class="app">
-    <div class="header">Menu</div>
-    <div id="menu"></div>
-  </div>
+<div class="app">
+<div class="header">Menu</div>
+<div id="menu"></div>
+</div>
 </div>
 
 <div id="confirmation" style="display:none;" class="confirmation">
-  <div class="tick-circle">✓</div>
-  <h2>Item Added to Cart</h2>
+<div class="tick-circle">✓</div>
+<h2>Item Added to Cart</h2>
 </div>
 
 <script>
 
 let startTime = 0;
 let restaurantNumber = 0;
+
 const scriptURL = "https://script.google.com/macros/s/AKfycbwI5RzUNmCQFkWtRof-hmoS7t78v4x8LDNa8o6REfuIaUXaYXm3uLByUav39d3GzNPb-g/exec";
+
 /* ===== YOUR 90 REAL IMAGES ===== */
+
 const realImages = [
 "dal-makhani.jpg","jalebi.jpg","south-indian-platter.jpg","palak-gravy.jpg",
 "bhindi-fry.jpg","bhindi-dry.jpg","bhindi-masala.jpg","pack-of-roti.jpg",
@@ -177,68 +182,77 @@ const realImages = [
 "dal-tadka.jpg","palak-paneer.jpg","paneer-tikka.jpg","paneer-butter-masala.jpg"
 ];
 
-/* Placeholder names */
 const pinkNames = ["Veg Korma","Paneer Do Pyaza","Mushroom Masala","Tawa Pulao","Hara Bhara Kebab"];
 const yellowNames = ["Dahi Bhalla","Veg Cutlet","Tomato Soup","Jeera Rice","Khichdi"];
 
 let allDishes = [];
 
-/* Add 90 real dishes */
 realImages.forEach(img=>{
-  allDishes.push({name:img,img:"images/"+img});
+allDishes.push({name:img,img:"images/"+img});
 });
 
-/* Add 10 placeholders */
 for(let i=0;i<5;i++){
-  allDishes.push({name:pinkNames[i],img:"images/pink-placeholder.jpg"});
-  allDishes.push({name:yellowNames[i],img:"images/yellow-placeholder.jpg"});
+allDishes.push({name:pinkNames[i],img:"images/pink-placeholder.jpg"});
+allDishes.push({name:yellowNames[i],img:"images/yellow-placeholder.jpg"});
 }
 
-/* Shuffle */
 allDishes.sort(()=>Math.random()-0.5);
 
 function formatName(filename){
-  return filename.replace(".jpg","").replace(/-/g," ")
-  .replace(/\b\w/g,l=>l.toUpperCase());
+return filename.replace(".jpg","").replace(/-/g," ")
+.replace(/\b\w/g,l=>l.toUpperCase());
 }
 
 function openMenu(count, restaurant){
-  restaurantNumber = restaurant
-  startTime = new Date().getTime();
-  document.getElementById("home").style.display="none";
-  document.getElementById("app").style.display="block";
 
-  const menuDiv=document.getElementById("menu");
-  menuDiv.innerHTML="";
+restaurantNumber = restaurant;
 
-  for(let i=0;i<count;i++){
-    let dish=allDishes[i];
-    let price=150+Math.floor(Math.random()*300);
-    let rating=(4+Math.random()*0.5).toFixed(1);
+startTime = new Date().getTime();
 
-    let name=dish.name.endsWith(".jpg")?formatName(dish.name):dish.name;
+document.getElementById("home").style.display="none";
+document.getElementById("app").style.display="block";
 
-    menuDiv.innerHTML+=`
-    <div class="menu-item">
-      <div class="menu-left">
-        <div class="dish-name">${name}</div>
-        <div class="rating">⭐ ${rating}</div>
-        <div class="price">₹${price}</div>
-      </div>
-      <div class="menu-right">
-        <img src="${dish.img}">
-        <button class="add-btn" onclick="confirmOrder('${name}')">ADD</button>
-      </div>
-    </div>`;
-  }
+const menuDiv=document.getElementById("menu");
+menuDiv.innerHTML="";
+
+for(let i=0;i<count;i++){
+
+let dish=allDishes[i];
+let price=150+Math.floor(Math.random()*300);
+let rating=(4+Math.random()*0.5).toFixed(1);
+
+let name=dish.name.endsWith(".jpg")?formatName(dish.name):dish.name;
+
+menuDiv.innerHTML+=`
+
+<div class="menu-item">
+
+<div class="menu-left">
+<div class="dish-name">${name}</div>
+<div class="rating">⭐ ${rating}</div>
+<div class="price">₹${price}</div>
+</div>
+
+<div class="menu-right">
+<img src="${dish.img}">
+<button class="add-btn" onclick="confirmOrder('${name}')">ADD</button>
+</div>
+
+</div>
+`;
+}
 }
 
 function confirmOrder(){
-  let endTime = new Date().getTime();
-  let decisionTime = (endTime - startTime)/1000;
-  fetch(scriptURL + "?restaurant=" + restaurantNumber + "&time=" + decisionTime);
-  document.getElementById("app").style.display="none";
-  document.getElementById("confirmation").style.display="flex";
+
+let endTime = new Date().getTime();
+let decisionTime = (endTime - startTime)/1000;
+
+fetch(scriptURL + "?restaurant=" + restaurantNumber + "&time=" + decisionTime, {mode:"no-cors"});
+
+document.getElementById("app").style.display="none";
+document.getElementById("confirmation").style.display="flex";
+
 }
 
 </script>
