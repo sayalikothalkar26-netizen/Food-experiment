@@ -125,10 +125,10 @@ body{
 
 <div id="home" class="home">
   <h1>Select Restaurant</h1>
-  <button class="restaurant-btn r1" onclick="openMenu(15)">Restaurant 1</button>
-  <button class="restaurant-btn r2" onclick="openMenu(30)">Restaurant 2</button>
-  <button class="restaurant-btn r3" onclick="openMenu(60)">Restaurant 3</button>
-  <button class="restaurant-btn r4" onclick="openMenu(100)">Restaurant 4</button>
+<button class="restaurant-btn r1" onclick="openMenu(15,1)">Restaurant 1</button>
+<button class="restaurant-btn r2" onclick="openMenu(30,2)">Restaurant 2</button>
+<button class="restaurant-btn r3" onclick="openMenu(60,3)">Restaurant 3</button>
+<button class="restaurant-btn r4" onclick="openMenu(100,4)">Restaurant 4</button>
 </div>
 
 <div id="app" style="display:none;">
@@ -202,7 +202,8 @@ function formatName(filename){
   .replace(/\b\w/g,l=>l.toUpperCase());
 }
 
-function openMenu(count){
+function openMenu(count, restaurant){
+  restaurantNumber = restaurant
   startTime = new Date().getTime();
   document.getElementById("home").style.display="none";
   document.getElementById("app").style.display="block";
@@ -233,6 +234,9 @@ function openMenu(count){
 }
 
 function confirmOrder(){
+  let endTime = new Date().getTime();
+  let decisionTime = (endTime - startTime)/1000;
+  fetch(scriptURL + "?restaurant=" + restaurantNumber + "&time=" + decisionTime);
   document.getElementById("app").style.display="none";
   document.getElementById("confirmation").style.display="flex";
 }
